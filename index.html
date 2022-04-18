@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 1200px;
+            margin: 0 auto;
+        }
+        .row {
+            height: 200px;
+            display: flex;
+            border: 1px solid black;
+        }
+        .square {
+            width: 100px;
+            height: 100px;
+            display: flex;
+        }
+        .big-square {
+            width: 200px;
+            height: 200px;
+            background-color: rgb(197, 182, 14);
+        }
+        .one {
+            background-color: red;
+        }
+        .two {
+            background-color: rgb(28, 15, 144);
+        }
+        .three {
+            background-color: rgb(207, 213, 43);
+        }
+        .four {
+            background-color: rgb(205, 30, 172);
+        }
+        .five {
+            background-color: rgb(19, 188, 81);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            
+            <div class="square one"></div>
+            <div class="square two"></div>
+            <div class="square three"></div>
+            <div class="square four"></div>
+            <div class="square five"></div>
+        </div>
+            <div class="row">
+            <div class="big-square"></div>
+        </div>
+    </div>
+<script>
+    const squares = document.querySelectorAll('.square')
+    const big_square = document.querySelector('.big-square')
+
+    squares.forEach(square => {
+        const moveAt = (e) => {
+            let x = e.clientX - 50;
+            let y = e.clientY - 50;
+            square.style.top = y + 'px';
+            square.style.left = x + 'px';
+        };
+        square.style.backgroundColor = square.dataset.color
+        square.onmousedown = (e) => {
+            square = e.currentTarget;
+            square.style.position = 'absolute';
+            document.addEventListener('mousemove', moveAt);
+        };
+        square.onmouseup = () => {
+            document.removeEventListener('mousemove', moveAt);
+
+            let square_top = square.getBoundingClientRect().top;
+            let square_left = square.getBoundingClientRect().left;
+            let square_right = square.getBoundingClientRect().right;
+            let square_bottom = square.getBoundingClientRect().bottom;
+
+            let big_square_top = big_square.getBoundingClientRect().top;
+            let big_square_left = big_square.getBoundingClientRect().left;
+            let big_square_right = big_square.getBoundingClientRect().right;
+            let big_square_bottom = big_square.getBoundingClientRect().bottom;
+
+            if (square_top > big_square_top
+                && square_left > big_square_left
+                && square_right < big_square_right
+                && square_bottom < big_square_bottom) {
+                big_square.style.backgroundColor = getComputedStyle(square).backgroundColor;
+                square.remove()
+
+            }
+
+        }
+    })
+</script>
+    </script>
+</body>
+</html>
